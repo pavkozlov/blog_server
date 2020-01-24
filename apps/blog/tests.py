@@ -82,7 +82,6 @@ class PostTest(TestCase):
         self.client.post('/blog/tags/', {'title': 'new tag 1'})
         self.client.post('/blog/posts/',
                          {'title': 'qwerty', 'body': 'body text', 'category_id': 1, 'tags_ids': [1, 2, 3]})
-        # self.client.post('/blog/posts/', {'title': 'new post 1'})
 
     def test_create(self):
         response = self.client.post('/blog/posts/',
