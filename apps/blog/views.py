@@ -6,6 +6,7 @@ from apps.blog.serializers import PostSerializer, TagSerializer, CategorySeriali
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
+    http_method_names = ['get', 'post', 'delete', 'patch']
 
     def retrieve(self, request, *args, **kwargs):
         self.get_object().add_view()
