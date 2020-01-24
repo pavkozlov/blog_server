@@ -33,6 +33,9 @@ class Tag(models.Model):
     # Заголовок
     title = models.CharField(max_length=150, unique=True, blank=False, null=False)
 
+    def __str__(self):
+        return self.title
+
 
 class Category(models.Model):
     # Заголовок
