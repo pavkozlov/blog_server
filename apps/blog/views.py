@@ -1,4 +1,4 @@
-from rest_framework import views, generics, viewsets
+from rest_framework import viewsets
 from apps.blog.models import Post, Tag, Category
 from apps.blog.serializers import PostSerializer, TagSerializer, CategorySerializer
 
