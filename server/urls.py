@@ -15,7 +15,9 @@ Including another URLconf
 """
 from django.urls import path, include
 from apps.blog import urls as blog_urls
+from apps.authorization import urls as auth_urls
 
 urlpatterns = [
-    path('blog/', include(blog_urls))
+    path('blog/', include(blog_urls)),
+    path('auth/', include(auth_urls))
 ]
