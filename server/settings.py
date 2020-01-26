@@ -35,9 +35,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
     'rest_framework',
     'django_filters',
-    'apps.blog'
+    'rest_framework.authtoken',
+
+    'apps.blog',
+    'apps.authorization',
+
 ]
 
 MIDDLEWARE = [
@@ -123,3 +128,5 @@ REST_FRAMEWORK = {
     #     'rest_framework.renderers.JSONRenderer',
     # ],
 }
+
+AUTH_USER_MODEL = 'authorization.User'
