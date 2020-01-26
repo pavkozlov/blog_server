@@ -1,22 +1,29 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
-from rest_framework.authtoken.models import Token
 
 
 class EmailValidator:
-
     def __call__(self, value):
         if get_user_model().objects.filter(email=value).exists():
             raise serializers.ValidationError("Такой email уже существует")
 
 
+class LoginSerializer(serializers.Serializer):
+    email = serializers.EmailField(required=True)
+    password = serializers.CharField(write_only=True, required=True, max_length=20)
+
+
 class RegistrationSerializer(serializers.Serializer):
     email = serializers.EmailField(required=True, validators=[EmailValidator()])
     password = serializers.CharField(write_only=True, required=True, max_length=20)
+    first_name = serializers.CharField(max_length=30, required=False)
+    last_name = serializers.CharField(max_length=30, required=False)
 
     def create(self, validated_data):
-        user = get_user_model().objects.create(email=validated_data['email'])
-        user.set_password(validated_data['password'])
+        password = validated_data.pop('password')
+        email = validated_data.pop('email')
+        user = get_user_model().objects.create(email=email, **validated_data)
+        user.set_password(password)
         user.save()
         return user
 

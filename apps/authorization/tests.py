@@ -2,6 +2,7 @@ from django.test import TestCase
 from rest_framework.test import APIClient
 from apps.authorization.models import User
 
+
 # Create your tests here.
 class TestRegistration(TestCase):
     def tearDown(self) -> None:
@@ -13,7 +14,7 @@ class TestRegistration(TestCase):
     def test_create(self):
         count = User.objects.all().count()
         self.assertEqual(count, 0)
-        response = self.client.post('/auth/registration/', {'email':'test@test.ru', 'password':'my_password'})
+        response = self.client.post('/auth/registration/', {'email': 'test@test.ru', 'password': 'my_password'})
         self.assertEqual(response.status_code, 201)
         count = User.objects.all().count()
         self.assertEqual(count, 1)
@@ -40,6 +41,7 @@ class TestRegistration(TestCase):
         count = User.objects.all().count()
         self.assertEqual(count, 1)
 
+
 class TestProfile(TestCase):
     def tearDown(self) -> None:
         pass
@@ -47,11 +49,15 @@ class TestProfile(TestCase):
     def setUp(self) -> None:
         self.client = APIClient()
         self.client.post('/auth/registration/', {'email': 'test1@test.ru', 'password': 'test1'})
-        self.client.post('/auth/registration/', {'email': 'test2@test.ru', 'password': 'test2'})
+        self.client.post('/auth/registration/', {'email': 'test2@test.ru', 'password': 'test2', 'first_name': 'admin'})
 
     def test_profile(self):
         response = self.client.get('/auth/profile/1/')
         self.assertEqual(response.data['email'], 'test1@test.ru')
+        self.assertEqual(response.data['first_name'], '')
+
+        response = self.client.get('/auth/profile/2/')
+        self.assertEqual(response.data['first_name'], 'admin')
 
         response = self.client.post('/auth/profile/1/')
         self.assertEqual(response.status_code, 405)
@@ -71,3 +77,23 @@ class TestProfile(TestCase):
         self.assertEqual(response.status_code, 204)
         response = self.client.get('/auth/profile/1/')
         self.assertEqual(response.status_code, 404)
+
+class TestLogin(TestCase):
+    def tearDown(self) -> None:
+        pass
+
+    def setUp(self) -> None:
+        self.client = APIClient()
+        self.client.post('/auth/registration/', {'email': 'test1@test.ru', 'password': 'test1'})
+        self.client.post('/auth/registration/', {'email': 'test2@test.ru', 'password': 'test2', 'first_name': 'admin'})
+
+    def test_login(self):
+        response = self.client.post('/auth/login/', {'email': 'test1@test.ru', 'password': 'test1'})
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(type(response.data) is str and len(response.data) == 40)
+
+        response = self.client.post('/auth/login/', {'email': 'test1@1111test.ru', 'password': 'test1'})
+        self.assertEqual(response.status_code, 400)
+
+        response = self.client.get('/auth/login/', {'email': 'test1@1111test.ru', 'password': 'test1'})
+        self.assertEqual(response.status_code, 405)
