@@ -13,5 +13,6 @@ class RegistrationView(views.APIView):
 
 
 class ProfileView(generics.RetrieveUpdateDestroyAPIView):
+    http_method_names = ['get', 'patch', 'post', 'delete']
     queryset = get_user_model().objects.all()
     serializer_class = ProfileSerializer
