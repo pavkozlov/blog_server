@@ -22,9 +22,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'u=al)#9n))uw2&&fvywwu=+ot!9c=d^$52#n=7zzcg=sex&nez'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -124,9 +124,12 @@ STATIC_URL = '/static/'
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 20,
-    # 'DEFAULT_RENDERER_CLASSES': [
-    #     'rest_framework.renderers.JSONRenderer',
-    # ],
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    ),
 }
 
 AUTH_USER_MODEL = 'authorization.User'
