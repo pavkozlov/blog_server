@@ -15,8 +15,7 @@ services:
     restart: always
 
   server:
-    build: .
-#    image: pavkozlov/blog_server:latest
+    image: pavkozlov/blog_server:latest
     container_name: server
     ports:
       - 8000:8000
