@@ -81,13 +81,10 @@ WSGI_APPLICATION = 'server.wsgi.application'
 
 DATABASES = {}
 
-if os.environ.get('DATABASE_URL'):
+if os.environ.get('POSTGRES_HOST'):
     DATABASES['default'] = dj_database_url.config(default=os.environ['POSTGRES_HOST'])
 else:
-    DATABASES['default'] = {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        }
+    DATABASES['default'] = {'ENGINE': 'django.db.backends.sqlite3', 'NAME': os.path.join(BASE_DIR, 'db.sqlite3')}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
