@@ -4,9 +4,9 @@ services:
     image: postgres:latest
     container_name: postgres
     ports:
-      - "5433:5432"
+      - 5432:5432
     volumes:
-    - ./pg_data:/var/lib/postgresql/data/pgdata
+      - ./pg_data:/var/lib/postgresql/data/pgdata
     environment:
       POSTGRES_USER: pkozlov
       POSTGRES_PASSWORD: 123456789
@@ -15,10 +15,10 @@ services:
     restart: always
 
   server:
-    image: pavkozlov/blog_server
+    image: pavkozlov/blog_server:latest
     container_name: server
     ports:
-    - 8000:8000
+      - 8000:8000
     environment:
       POSTGRES_HOST: db
     restart: always
@@ -29,8 +29,8 @@ services:
     image: nginx
     container_name: nginx
     volumes:
-    - ./default.conf:/etc/nginx/default.conf
+      - ./default.conf:/etc/nginx/conf.d/default.conf
     links:
       - server
     ports:
-    - 80:80
+      - 80:8989
