@@ -79,6 +79,8 @@ WSGI_APPLICATION = 'server.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
+DATABASES = {}
+
 if os.environ.get('DATABASE_URL'):
     DATABASES['default'] = dj_database_url.config(default=os.environ['POSTGRES_HOST'])
 else:
