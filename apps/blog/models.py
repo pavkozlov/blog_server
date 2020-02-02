@@ -1,14 +1,10 @@
 from django.db import models
+from django.contrib.auth import get_user_model
 
 
 class Post(models.Model):
-    # Заголовок
-    title = models.CharField(max_length=150, db_index=True, unique=True, blank=False, null=False)
-    # Тело
     body = models.TextField(db_index=True, blank=False, null=False)
-    # Теги
     tags = models.ManyToManyField('Tag', related_name='tag_posts', db_index=True, blank=True, default=[])
-    # Категория
     category = models.ForeignKey(
         'Category',
         related_name='category_posts',
@@ -19,10 +15,9 @@ class Post(models.Model):
     )
 
     # СЛУЖЕБНЫЕ
-    # Дата создания
     created = models.DateTimeField(auto_now_add=True)
-    # Просмотры
     views = models.BigIntegerField(default=0, blank=False, null=False)
+    author = models.ForeignKey(get_user_model(), blank=True, null=True, on_delete=models.SET_NULL)
 
     def add_view(self):
         self.views += 1
@@ -30,7 +25,6 @@ class Post(models.Model):
 
 
 class Tag(models.Model):
-    # Заголовок
     title = models.CharField(max_length=150, unique=True, blank=False, null=False)
 
     def __str__(self):
@@ -38,5 +32,4 @@ class Tag(models.Model):
 
 
 class Category(models.Model):
-    # Заголовок
     title = models.CharField(max_length=150, unique=True, blank=False, null=False)

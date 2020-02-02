@@ -1,5 +1,17 @@
 from rest_framework import serializers
 from apps.blog.models import Post, Tag, Category
+from django.contrib.auth import get_user_model
+
+
+class AuthorSerializer(serializers.ModelSerializer):
+    count = serializers.SerializerMethodField()
+
+    def get_count(self, *args):
+        return Post.objects.filter(author=args[0]).count()
+
+    class Meta:
+        model = get_user_model()
+        fields = ['id', 'email', 'count']
 
 
 class TagSerializer(serializers.ModelSerializer):
@@ -37,6 +49,7 @@ class PostSerializer(serializers.ModelSerializer):
         allow_null=True,
         default=None
     )
+    author = AuthorSerializer(read_only=True)
 
     def create(self, validated_data):
         tags = validated_data.pop('tags_ids')
@@ -47,6 +60,7 @@ class PostSerializer(serializers.ModelSerializer):
                 tag_obj = tags_list.first()
                 post.tags.add(tag_obj)
         post.save()
+
         return post
 
     class Meta:

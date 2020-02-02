@@ -1,7 +1,7 @@
-from rest_framework.routers import DefaultRouter
+from rest_framework.routers import SimpleRouter
 from apps.blog.views import PostViewSet, TagViewSet, CategoryViewSet
 
-router = DefaultRouter()
+router = SimpleRouter()
 router.register('posts', PostViewSet)
 router.register('tags', TagViewSet)
 router.register('category', CategoryViewSet)

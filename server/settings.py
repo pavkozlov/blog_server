@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'u=al)#9n))uw2&&fvywwu=+ot!9c=d^$52#n=7zzcg=sex&nez'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -82,10 +82,8 @@ WSGI_APPLICATION = 'server.wsgi.application'
 DATABASES = {}
 
 if os.environ.get('POSTGRES_HOST'):
-    print('PG')
     DATABASES['default'] = dj_database_url.config(default=os.environ['POSTGRES_HOST'])
 else:
-    print('SQLITE')
     DATABASES['default'] = {'ENGINE': 'django.db.backends.sqlite3', 'NAME': os.path.join(BASE_DIR, 'db.sqlite3')}
 
 # Password validation
@@ -129,6 +127,7 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 20,
     'DEFAULT_RENDERER_CLASSES': [
         'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer'
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.TokenAuthentication',
